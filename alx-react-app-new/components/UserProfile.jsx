@@ -6,10 +6,9 @@ function UserProfile(props) {
       padding: "10px",
       margin: "10px"
     }}>
-      <h2>{props.name}</h2>
-      <p>Age: {props.age}</p>
       <h2 style={{color: "blue"}}>{props.name}</h2>
       <p style={{fontWeight: "bold"}}>Age: {props.age}</p>
+      <p>Age: <span style={{fontWeight: "bold"}}>{props.age}</span></p>
       <p>Bio: {props.bio}</p>
     </div>
   )
