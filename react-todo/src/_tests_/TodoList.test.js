@@ -1,46 +1,35 @@
-/* eslint-disable react/prop-types */
-import { createContext, useState, useContext, useEffect } from 'react';
+ import { render, screen, fireEvent } from '@testing-library/react';
+ import '@testing-library/jest-dom'; // Use the main import path
+ import TodoList from '../components/TodoList';
 
-const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+ test('renders TodoList component with initial todos', () => {
+     render( < TodoList / > );
+     expect(screen.getByText('Learn React in depth')).toBeInTheDocument();
+     expect(screen.getByText('Learn javaScript in depth')).toBeInTheDocument();
+ });
 
-    useEffect(() => {
-        const checkAuth = () => {
-            const auth = localStorage.getItem('isAuthenticated') === 'true';
-            setIsAuthenticated(auth);
-        };
+ test('adds a new todo', () => {
+     render( < TodoList / > );
+     fireEvent.change(screen.getByPlaceholderText('Add a new todo'), { target: { value: 'New Todo' } });
+     fireEvent.click(screen.getByText('Add Todo'));
+     expect(screen.getByText('New Todo')).toBeInTheDocument();
+ });
 
-        checkAuth();
-        window.addEventListener('storage', checkAuth);
+ test('toggles a todo item', () => {
+     render( < TodoList / > );
+     const todo = screen.getByText('Learn React in depth');
+     // Toggle to completed
+     fireEvent.click(todo);
+     expect(todo).toHaveStyle('text-decoration: none');
+     // Toggle back to not completed
+     fireEvent.click(todo);
+     expect(todo).toHaveStyle('text-decoration: line-through');
+ });
 
-        return () => {
-            window.removeEventListener('storage', checkAuth);
-        };
-    }, []);
-
-    const login = () => {
-        localStorage.setItem('isAuthenticated', 'true');
-        setIsAuthenticated(true);
-    };
-
-    const logout = () => {
-        localStorage.removeItem('isAuthenticated');
-        setIsAuthenticated(false);
-    };
-
-    return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
-
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
-};
+ test('deletes a todo item', () => {
+     render( < TodoList / > );
+     const deleteButton = screen.getAllByText('Delete')[0];
+     fireEvent.click(deleteButton);
+     expect(screen.queryByText('Learn React in depth')).not.toBeInTheDocument();
+ });
