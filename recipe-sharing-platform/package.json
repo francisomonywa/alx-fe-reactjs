@@ -12,7 +12,9 @@
     "dependencies": {
         "json-server": "^1.0.0-beta.2",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+
+        "react-dom": "^18.3.1",
+        "react-router-dom": "^6.26.2"
     },
     "devDependencies": {
         "@eslint/js": "^9.9.0",
@@ -30,3 +32,4 @@
         "vite": "^5.4.1"
     }
 }
+19 changes: 11 additions & 8 deletions19
