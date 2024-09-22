@@ -1,11 +1,15 @@
 /* eslint-disable no-unused-vars */
- 
+import React from 'react';
 import React, { useState } from 'react';
 import SearchInput from './components/SearchInput';
 import { fetchUserData } from './services/githubService';
 
 const App = () => {
-  
+  return (
+    <div className="App">
+      <h1 className='text-3xl font-bold text-center'>GitHub User Search Application</h1>
+    </div>
+  );
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
