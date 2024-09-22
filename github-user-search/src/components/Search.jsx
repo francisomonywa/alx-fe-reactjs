@@ -1,14 +1,13 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
- 
-import Search from './components/Search';
 import { fetchUserData } from './services/githubService';
 
-const App = () => {
+const Search = ({ onSearch }) => {
+    const [searchTerm, setSearchTerm] = useState('');
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
     const handleSearch = async (username) => {
         setLoading(true);
         setError(null);
@@ -23,15 +22,30 @@ const App = () => {
         }
     };
 
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-            <h1 className="text-3xl font-bold mb-6 text-gray-800">GitHub User Search</h1>
-            
-            <Search onSearch={handleSearch} />
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSearch(searchTerm);
+    };
 
+    return (
+        <div className="w-full max-w-lg">
+            <form onSubmit={handleSubmit} className="flex items-center space-x-3">
+                <input
+                    type="text"
+                    placeholder="Search GitHub user"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                >
+                    Search
+                </button>
+            </form>
             {loading && <p className="mt-4 text-blue-500">Loading...</p>}
             {error && <p className="mt-4 text-red-500">{error}</p>}
-
             {userData && (
                 <div className="mt-8 p-4 bg-white shadow-lg rounded-lg">
                     <img
@@ -55,4 +69,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default Search;
