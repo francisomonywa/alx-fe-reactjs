@@ -1,23 +1,27 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
- 
 import Search from './components/Search';
 import { fetchUserData } from './services/githubService';
 
 const App = () => {
-    const [userData, setUserData] = useState(null);
+    
+    const [userData, setUserData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleSearch = async (username) => {
+     
+   
         setLoading(true);
         setError(null);
-        setUserData(null);
+        
+        setUserData([]);
         try {
-            const data = await fetchUserData(username);
+            
+            const data = await fetchUserData(searchParams);
             setUserData(data);
         } catch (error) {
-            setError('Looks like we can’t find the user.');
+    
+            setError('Looks like we can’t find any users.');
         } finally {
             setLoading(false);
         }
@@ -26,7 +30,6 @@ const App = () => {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
             <h1 className="text-3xl font-bold mb-6 text-gray-800">GitHub User Search</h1>
-            
             <Search onSearch={handleSearch} />
 
             {loading && <p className="mt-4 text-blue-500">Loading...</p>}
@@ -49,6 +52,10 @@ const App = () => {
                     >
                         View Profile
                     </a>
+            {/* Display multiple users */}
+            
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
