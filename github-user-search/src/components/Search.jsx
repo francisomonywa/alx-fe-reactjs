@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { fetchUserData } from './services/githubService';
 
+
 const Search = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
     const handleSearch = async (username) => {
         setLoading(true);
         setError(null);
@@ -16,11 +18,13 @@ const Search = ({ onSearch }) => {
             const data = await fetchUserData(username);
             setUserData(data);
         } catch (error) {
-            setError('Looks like we can’t find the user.');
+            
+            setError('Looks like we cant find the user');
         } finally {
             setLoading(false);
         }
     };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -44,8 +48,10 @@ const Search = ({ onSearch }) => {
                     Search
                 </button>
             </form>
+
             {loading && <p className="mt-4 text-blue-500">Loading...</p>}
             {error && <p className="mt-4 text-red-500">{error}</p>}
+
             {userData && (
                 <div className="mt-8 p-4 bg-white shadow-lg rounded-lg">
                     <img
